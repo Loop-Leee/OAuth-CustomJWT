@@ -17,11 +17,16 @@ import org.springframework.web.servlet.ModelAndView;
 @RestController
 public class HomePageController {
 
+//    @GetMapping("/home")
+//    public ModelAndView toHomePage(){
+//        ModelAndView homePage = new ModelAndView("homePage");
+//        homePage.addObject("message", "Hello From Message");
+//        return homePage;
+//    }
+
     @GetMapping("/home")
-    public ModelAndView toHomePage(){
-        ModelAndView homePage = new ModelAndView("homePage");
-        homePage.addObject("message", "Hello From Message");
-        return homePage;
+    public String toHomePage(){
+        return "Hello From Message";
     }
 
 }

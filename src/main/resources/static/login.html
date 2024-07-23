@@ -24,25 +24,21 @@
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ username: username, password: password })
+            body: JSON.stringify({username: username, password: password})
         })
-            .then(response => {
-                if (response.ok) {
-                    return response.text();
-                } else {
+            .then(token => {
+                if (!token.ok) {
                     throw new Error('登录失败(html)');
                 }
-            })
-            .then(token => {
                 console.log('Login successful', token);
                 // Save token to localStorage or cookie if needed
                 localStorage.setItem('jwtToken', token);
                 // Redirect to homepage
                 window.location.href = '/home';
-                })
+            })
             .catch(error => {
                 console.error('Error:', error);
-                alert('Login failed(alert): ' + error.message);
+                alert('Login failed(alert in "catch error"): ' + error.message);
             });
     }
 </script>
