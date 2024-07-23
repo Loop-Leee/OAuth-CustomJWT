@@ -42,12 +42,13 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        // 获取 token
+        // 从request中获取token, 如果没有或者不是jwtToken则直接放行
         String authHeader = request.getHeader(AUTH_HEADER);
         if(Objects.isNull(authHeader) || !authHeader.startsWith(AUTH_HEADER_TYPE)){
             filterChain.doFilter(request,response);
             return;
         }
+
         String authToken = authHeader.split(" ")[1];
         log.info("authToken: {}",authToken);
 

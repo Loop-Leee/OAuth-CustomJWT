@@ -1,5 +1,6 @@
 package com.alec.oauthshushengdemo.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
@@ -17,16 +18,12 @@ import org.springframework.web.servlet.ModelAndView;
 @RestController
 public class HomePageController {
 
-//    @GetMapping("/home")
-//    public ModelAndView toHomePage(){
-//        ModelAndView homePage = new ModelAndView("homePage");
-//        homePage.addObject("message", "Hello From Message");
-//        return homePage;
-//    }
-
     @GetMapping("/home")
-    public String toHomePage(){
-        return "Hello From Message";
+    public ModelAndView toHomePage(HttpServletRequest request){
+        ModelAndView homePage = new ModelAndView("homePage");
+        homePage.addObject("message", "Hello From Message");
+        return homePage;
     }
+
 
 }

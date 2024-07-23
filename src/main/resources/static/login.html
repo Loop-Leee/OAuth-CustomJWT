@@ -11,36 +11,64 @@
     <input type="text" id="username" name="username"><br>
     <label for="password">密码:</label>
     <input type="password" id="password" name="password"><br>
-    <button type="button" onclick="login()">Login</button>
+    <button type="submit">Login</button>
 </form>
 
 <script>
-    function login() {
+    const loginForm = document.getElementById('loginForm');
+
+    loginForm.addEventListener('submit', async function(event) {
+        event.preventDefault();
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
 
-        fetch('/user/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({username: username, password: password})
-        })
-            .then(token => {
-                if (!token.ok) {
-                    throw new Error('登录失败(html)');
-                }
-                console.log('Login successful', token);
-                // Save token to localStorage or cookie if needed
-                localStorage.setItem('jwtToken', token);
-                // Redirect to homepage
-                window.location.href = '/home';
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Login failed(alert in "catch error"): ' + error.message);
+        try {
+            const response = await fetch('/user/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, password })
             });
+
+            if (response.ok) {
+                console.log("Login successful, waiting to get token...");
+                const data = await response.json();
+                console.log("Login successful, token: " + data.token);
+                // 将 token 存储到 localStorage
+                localStorage.setItem('token', data.token);
+                // 通过GET请求跳转到主页
+                goToHomePage(data);
+            } else {
+                alert('Login failed');
+            }
+        } catch (error) {
+            // console.error('Error:', error);
+        }
+    });
+
+
+    function goToHomePage(data) {
+        const token = localStorage.getItem('token');
+        fetch('/home', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then(response => {
+                    if (response.ok) {
+                        console.log("Token is valid, redirecting to home page...");
+                        window.location.href = '/home.html';
+                    } else {
+                        console.log("Token is invalid, redirecting to login page...");
+                        alert('Unauthorized, Please login first!');
+                        window.location.href = '/login.html';
+                    }
+                }
+            )
     }
+
 </script>
 </body>
 </html>

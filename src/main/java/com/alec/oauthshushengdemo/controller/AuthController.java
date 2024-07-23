@@ -1,5 +1,6 @@
 package com.alec.oauthshushengdemo.controller;
 
+import cn.hutool.json.JSONUtil;
 import cn.hutool.jwt.JWT;
 import com.alec.oauthshushengdemo.model.web.MyConstant;
 import com.alec.oauthshushengdemo.model.web.SignInReq;
@@ -12,6 +13,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * ClassName: AuthController
@@ -54,7 +57,10 @@ public class AuthController {
                 .setPayload("username", req.getUsername())
                 .setKey(MyConstant.JWT_SIGN_KEY.getBytes(StandardCharsets.UTF_8))
                 .sign();
-        return ResponseEntity.ok("登录成功");
+        Map<String, String> map = new HashMap<>();
+        map.put("token", token);
+        String result = JSONUtil.toJsonStr(map);
+        return ResponseEntity.ok(result);
 
 
     }
