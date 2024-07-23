@@ -1,0 +1,27 @@
+spring:
+  security:
+    user:
+      name: alec
+      password: alec
+  datasource:
+    url: jdbc:mysql://localhost:3306/security_test
+    username: root
+    password: 876543212
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # 模板文件存放路径
+  thymeleaf:
+    cache: false
+    encoding: UTF-8
+
+hutool-jwt:
+  version: 5.8.29
+
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*.xml
+  type-aliases-package: com.alec.oauthshushengdemo.domain
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
