@@ -50,10 +50,10 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         }
 
         String authToken = authHeader.split(" ")[1];
-        log.info("authToken: {}",authToken);
+        log.info("查看 JwtFilter 的 authToken : {}",authToken);
 
-        // 校验 token
-        if(JWTUtil.verify(authToken, MyConstant.JWT_SIGN_KEY.getBytes(StandardCharsets.UTF_8))){
+        // 校验 token, 错误则返回
+        if(!JWTUtil.verify(authToken, MyConstant.JWT_SIGN_KEY.getBytes(StandardCharsets.UTF_8))){
             log.info("invalid token");
             filterChain.doFilter(request,response);
             return;
